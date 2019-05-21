@@ -18,12 +18,12 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
  * Created by knekrasov on 10/15/2018.
  */
 @RestController
-@RequestMapping("/account")
+@RequestMapping("/accounts")
 public class AccountController {
     @Autowired
     private AccountService accountService;
 
-    @RequestMapping(method = GET)
+    @RequestMapping(value = "/my", method = GET)
     public List<AccountDTO> getCurrent() {
         return accountService.getMyAccounts();
     }
@@ -32,6 +32,11 @@ public class AccountController {
     @ResponseStatus(CREATED)
     public AccountDTO createAccount(@Valid @RequestBody AccountNewDTO newAcc) {
         return accountService.create(newAcc);
+    }
+
+    @RequestMapping(value = "/{id}", method = GET)
+    public AccountDTO getAccount(@PathVariable("id") Long id) {
+        return accountService.getAccountById(id);
     }
 
     @RequestMapping(value = "/{id}/transactions", method = POST)
